@@ -130,43 +130,133 @@ def send_to_ollama(prompt: str, context: str = None) -> Optional[str]:
         return None
 
 def save_upload_file(upload_file: UploadFile) -> str:
-    """Save uploaded file to disk"""
-    file_path = os.path.join(UPLOAD_DIR, upload_file.filename)
-    
-    with open(file_path, "wb") as buffer:
-        content = upload_file.file.read()
-        buffer.write(content)
-    
-    return file_path
+    """Save uploaded file to disk and return absolute path"""
+    try:
+        # Ensure upload directory exists
+        os.makedirs(UPLOAD_DIR, exist_ok=True)
+        
+        # Create safe filename
+        safe_filename = upload_file.filename.replace(" ", "_")
+        file_path = os.path.join(UPLOAD_DIR, safe_filename)
+        abs_path = os.path.abspath(file_path)
+
+        print(f"📁 Saving uploaded file to: {abs_path}")
+
+        # Save the file
+        with open(abs_path, "wb") as buffer:
+            # Reset file pointer to beginning
+            upload_file.file.seek(0)
+            content = upload_file.file.read()
+            buffer.write(content)
+
+        # Verify file was saved
+        if not os.path.exists(abs_path): 
+            raise Exception(f"File was not saved properly: {abs_path}")
+        
+        file_size = os.path.getsize(abs_path)
+        print(f"✅ File saved successfully. Size: {file_size} bytes")
+        
+        return abs_path
+        
+    except Exception as e:
+        print(f"❌ Error saving file: {e}")
+        raise
+import time
 
 def transcribe_audio_file(file_path: str) -> Optional[str]:
-    """Transcribe audio file using Whisper"""
+    """Transcribe audio file using Whisper with improved error handling"""
     global whisper_model
-    
+
     if whisper_model is None:
         print("❌ Whisper model not loaded")
         return None
-    
+
     if not os.path.exists(file_path):
         print(f"❌ Audio file not found: {file_path}")
         return None
-    
+    start_time = time.time()  # Start timer
+    print(f"📂 File exists: {file_path}")
+    print(f"📏 File size: {os.path.getsize(file_path)} bytes")
+
+    temp_path = None
     try:
-        print(f"🎯 Transcribing audio file: {file_path}")
-        result = whisper_model.transcribe(file_path, fp16=False, language="en")
-        transcript = result["text"].strip()
+        # Check if we need to convert audio format
+        file_extension = os.path.splitext(file_path)[1].lower()
         
-        # Save transcript to file
-        transcript_file = os.path.splitext(file_path)[0] + "_transcript.txt"
-        with open(transcript_file, 'w', encoding='utf-8') as f:
-            f.write(transcript)
+        if file_extension == '.wav':
+            # If it's already a WAV file, try to use it directly first
+            print(f"🎯 Attempting direct transcription of WAV file: {file_path}")
+            try:
+                result = whisper_model.transcribe(file_path, fp16=False, language="en")
+                transcript = result["text"].strip()
+                
+                # Save transcript to file
+                transcript_file = os.path.splitext(file_path)[0] + "_transcript.txt"
+                with open(transcript_file, 'w', encoding='utf-8') as f:
+                    f.write(transcript)
+
+                print("✅ Direct transcription completed successfully")
+                return transcript
+                
+            except Exception as e:
+                print(f"⚠️ Direct transcription failed, trying conversion: {e}")
         
-        print("✅ Transcription completed successfully")
-        return transcript
-    
+        # If direct transcription failed or it's not a WAV file, convert it
+        try:
+            import librosa
+            import soundfile as sf
+            
+            # Create temporary file with proper cleanup
+            temp_fd, temp_path = tempfile.mkstemp(suffix='.wav')
+            os.close(temp_fd)  # Close file descriptor, we'll open it again
+            
+            print(f"🔄 Converting audio to: {temp_path}")
+            
+            # Load and convert audio
+            audio, sr = librosa.load(file_path, sr=16000)
+            sf.write(temp_path, audio, 16000)
+            
+            # Verify temp file was created
+            if not os.path.exists(temp_path):
+                raise Exception(f"Temporary file was not created: {temp_path}")
+            
+            print(f"✅ Audio converted successfully. Temp file size: {os.path.getsize(temp_path)} bytes")
+            
+            # Transcribe the converted audio
+            print(f"🎯 Transcribing converted audio: {temp_path}")
+            result = whisper_model.transcribe(temp_path, fp16=False, language="en")
+            transcript = result["text"].strip()
+
+            # Save transcript to file
+            transcript_file = os.path.splitext(file_path)[0] + "_transcript.txt"
+            with open(transcript_file, 'w', encoding='utf-8') as f:
+                f.write(transcript)
+
+            print("✅ Transcription completed successfully")
+            return {
+                "transcript": transcript,
+                "duration": time.time() - start_time  # End timer and calculate duration
+            }
+            
+        except ImportError:
+            print("❌ librosa and soundfile are required for audio conversion")
+            print("Install them with: pip install librosa soundfile")
+            return None
+            
     except Exception as e:
         print(f"❌ Error during transcription: {e}")
+        import traceback
+        traceback.print_exc()
         return None
+    
+    finally:
+        # Clean up temporary file if it was created
+        if temp_path and os.path.exists(temp_path):
+            try:
+                os.unlink(temp_path)
+                print(f"🧹 Cleaned up temporary file: {temp_path}")
+            except Exception as e:
+                print(f"⚠️ Warning: Could not clean up temp file {temp_path}: {e}")
 
 def generate_structured_summary(transcript: str) -> Dict[str, Any]:
     """Generate structured summary with customer and agent insights"""
@@ -296,6 +386,7 @@ async def transcribe_audio(file: UploadFile = File(...)):
             detail=f"Unsupported file format. Supported formats: {', '.join(supported_formats)}"
         )
     
+    file_path = None
     try:
         # Save uploaded file
         file_path = save_upload_file(file)
@@ -314,6 +405,12 @@ async def transcribe_audio(file: UploadFile = File(...)):
             raise HTTPException(status_code=500, detail="Failed to transcribe audio")
     
     except Exception as e:
+        # Clean up uploaded file if transcription failed
+        if file_path and os.path.exists(file_path):
+            try:
+                os.unlink(file_path)
+            except:
+                pass
         raise HTTPException(status_code=500, detail=f"Error processing audio: {str(e)}")
 
 @app.post("/api/prompt", response_model=PromptResponse)
