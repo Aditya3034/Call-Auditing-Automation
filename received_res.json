@@ -1,0 +1,52 @@
+{
+  "structured_transcript": "[00:00:00] Agent (calm, professional): Hello, thank you for calling Payone.  How can I assist you today?\n[00:00:08] Customer (distressed): I booked a flight for today, but there's been a death in the family.  Is there any process for cancelling the non-refundable ticket?\n[00:00:20] Agent (empathetic): I understand this is a difficult situation.  Did the passenger miss the flight?\n[00:00:25] Customer: No, the flight is at 10:15 am.  The passenger won't be able to travel.\n[00:00:30] Agent (professional):  Could I please have your call and registration number, and your PN number?\n[00:00:40] Customer: My PN number is IJUR7R. I booked yesterday.\n[00:00:45] Agent (professional): Thank you.  The travel date is 10:25 am, so there are approximately 2.5 hours remaining before departure. Unfortunately, this is a non-refundable ticket, meaning a cancellation won't result in a refund.  Date changes are also not possible.\n[00:01:15] Customer:  So there's absolutely no option for a refund, even with a family emergency?\n[00:01:20] Agent (sympathetic): I understand your frustration.  With less than 2.5 hours until departure, options are extremely limited. Even a no-show will likely result in charges.  \n[00:01:35] Agent (professional): Your best course of action is to contact Spyjet customer service directly to explain the situation and see if they offer any exception.  If they agree to a cancellation, you can then request a refund through the Payone portal.  Expect a refund processing time of 24-48 working hours, though some charges may still apply.\n[00:02:00] Agent (professional):  If Spyjet doesn't offer a cancellation, unfortunately, there will be no refund, and the passenger will have to remain at the airport.\n[00:02:15] Customer: Okay.\n[00:02:15] Agent (professional): Please contact Spyjet customer care.  If they grant a cancellation, make a record of that call. You can also email us at flightsupport@payone.in or use our live chat for updates; you’ll get a response within 2 minutes. Your flight resume number is 300; you’ll need this for any further inquiries.\n[00:02:50] Agent (professional):  Is there anything else I can assist you with today?\n[00:03:00] Customer: No, thank you.\n[00:03:02] Agent (professional): You're welcome. Thank you for calling Payone. Goodbye.\n\n**Key Action Items:**\n\n* Customer to contact Spyjet customer service directly.\n* If Spyjet cancels the flight, customer to request a refund via Payone portal (expect 24-48 hour processing).\n* Customer to keep a record of their call with Spyjet.\n* Alternative contact methods for updates provided: email (flightsupport@payone.in) and live chat.\n\n**Escalation:** None formally escalated, but the agent strongly suggested contacting the airline directly, understanding the limitations due to the short time frame before flight departure.\n",
+  "title": "Non-Refundable Flight Cancellation Request Due to Family Emergency",
+  "summary": "A customer called regarding a non-refundable flight booked through Payone (PN: IJUR7R) for a flight departing at 10:15 am. Due to a death in the family, the passenger was unable to travel.  The customer initially expressed distress and frustration about the non-refundable nature of the ticket. The agent, while empathetic, explained that due to the short timeframe before departure (approximately 2.5 hours remaining), a refund or date change was not possible through Payone. The agent advised the customer to contact Spyjet customer service directly to request a cancellation.  If Spyjet grants the cancellation, the customer can then request a refund through the Payone portal, with a processing time of 24-48 hours.  The agent also provided alternative contact methods for updates, including email (flightsupport@payone.in) and live chat. The call concluded with the customer understanding the process. No formal escalation occurred; however, the agent directed the customer to the airline for potential exception handling. The emotional tone shifted from the customer's initial distress and frustration to a more neutral understanding once the agent provided clear guidance on the available options, despite the negative outcome regarding the refund.",
+  "evaluation_metrics": {
+    "Call Opening": {
+      "score": 9,
+      "comments": "Agent greeted professionally and efficiently, setting a positive tone."
+    },
+    "Empathy": {
+      "score": 9,
+      "comments": "Agent demonstrated excellent empathy by acknowledging the difficult situation and using a reassuring tone.  Showed understanding without making promises beyond their control."
+    },
+    "Logical Effective Probing": {
+      "score": 7,
+      "comments": "Agent asked for necessary information. However, missed asking for the customer's name which would have been beneficial for record-keeping and personalization.  Also missed clarifying the booking details, relying on limited information from the customer"
+    },
+    "Listening Skills Comprehension": {
+      "score": 8,
+      "comments": "Agent actively listened and understood the core issue, the urgency, and the customer's emotional state.  However, could have demonstrated better comprehension by asking more clarifying questions about the booking details."
+    },
+    "Hold": {
+      "score": 0,
+      "comments": "Not applicable"
+    },
+    "Dead Air": {
+      "score": 10,
+      "comments": "No noticeable dead air during the conversation.  The flow was smooth and efficient."
+    },
+    "Tone Mannerism Positive Approach": {
+      "score": 9,
+      "comments": "Agent maintained a professional, calm, and empathetic tone throughout the call. The positive approach was evident in their willingness to guide the customer to a solution."
+    },
+    "Objection Escalation Handling Ownership": {
+      "score": 8,
+      "comments": "Agent handled the customer's objection (no refund) professionally, explaining the policy clearly and offering alternative solutions.  The agent took ownership of guiding the customer, even though the primary resolution lay with a third party."
+    },
+    "Further Assistance Call Closing": {
+      "score": 9,
+      "comments": "Agent provided clear instructions for next steps and alternative contact methods. The closing was polite and efficient."
+    },
+    "Raise Complaint": {
+      "score": 0,
+      "comments": "Not applicable"
+    },
+    "Resolution": {
+      "score": 7,
+      "comments": "While a full refund wasn't possible, the agent provided a clear path forward by directing the customer to the airline for potential cancellation and outlining the refund process through Payone.  The resolution wasn't fully within Payone's control, but the agent's guidance was effective."
+    }
+  },
+  "success": true
+}
