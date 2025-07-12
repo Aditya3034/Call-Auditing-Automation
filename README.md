@@ -1,6 +1,6 @@
-# 🎧 Call Analysis API — Whisper + Gemini Integration
+# 🎧 Call Auditing Automation — Whisper + Gemini Integration
 
-This FastAPI application provides end-to-end call analysis by transcribing audio files, structuring transcripts, generating summaries, and evaluating interactions using OpenAI's Whisper and Google's Gemini LLMs.
+This FastAPI application enables automated call auditing by transcribing audio recordings, structuring transcripts, generating call summaries, and evaluating agent interactions using OpenAI's Whisper and Google Gemini LLMs.
 
 ---
 
@@ -9,8 +9,8 @@ This FastAPI application provides end-to-end call analysis by transcribing audio
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/payone-call-analysis-api.git
-cd payone-call-analysis-api
+git clone https://github.com/your-username/Call-Auditing-Automation.git
+cd Call-Auditing-Automation
 ```
 
 ### 2. Create and activate a virtual environment
@@ -34,28 +34,28 @@ uvicorn main:app --reload
 
 ---
 
-## 🧪 API Endpoints
+## 📍 API Endpoints
 
-Access Swagger docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+Interactive docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-| Method | Route                            | Description                                       |
-|--------|----------------------------------|---------------------------------------------------|
-| POST   | `/`                              | Health check — returns `"Application is started"` |
-| POST   | `/api/analyze-audio`            | Upload audio for transcription + full analysis    |
-| POST   | `/api/structure-transcript`     | Convert raw transcript into structured format     |
-| POST   | `/api/generate-summary`         | Generate title and summary from transcript        |
-| POST   | `/api/evaluate-metrics`         | Score transcript using behavioral metrics         |
-| GET    | `/health`                       | Returns model initialization status and timestamp |
+| Method | Endpoint                            | Description                                             |
+|--------|-------------------------------------|---------------------------------------------------------|
+| POST   | `/`                                 | Health check — returns `"Application is started"`       |
+| POST   | `/api/analyze-audio`               | Full workflow: transcribe, structure, summarize, score  |
+| POST   | `/api/structure-transcript`        | Format raw transcript into structured format            |
+| POST   | `/api/generate-summary`            | Create a title and summary from transcript              |
+| POST   | `/api/evaluate-metrics`            | Score structured transcript using interaction metrics   |
+| GET    | `/health`                          | Returns model status, Gemini initialization, timestamp  |
 
 ---
 
-## 📄 Request Payload Samples
+## 🧪 Sample Requests
 
 ### `/api/structure-transcript`
 
 ```json
 {
-  "transcript": "Customer: I'm trying to cancel my flight due to an emergency..."
+  "transcript": "Customer: I'm trying to cancel my ticket because of an emergency..."
 }
 ```
 
@@ -77,24 +77,23 @@ Access Swagger docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
-## ⚙️ Key Features
+## 🛠 Technologies Used
 
-- 🧠 Dynamic LLM integration: supports Gemini, OpenAI, Ollama, Sarvam, DeepSeek
-- 🎙️ Whisper Large V3 for transcription
-- 📄 Clean call structuring, emotional tagging, and segmentation
-- 📝 Descriptive summaries and resolution analysis
-- 📊 Agent performance scoring with clear metrics
-- 🩺 Health monitoring via `/health` endpoint
+- 🎙️ Whisper Large V3 — audio transcription
+- 🧠 Gemini 1.5 Flash — transcript analysis, summarization, scoring
+- 🚀 FastAPI — backend framework for endpoints
+- 🔁 Modular LLM dispatcher — supports Gemini, OpenAI, Ollama, Sarvam, DeepSeek
+- 📦 Uvicorn, Pydantic — server runtime and schema validation
 
 ---
 
-## ✅ Health Endpoint
+## ✅ Health Check Output
 
 ```http
 GET /health
 ```
 
-Sample output:
+Returns:
 
 ```json
 {
@@ -107,27 +106,35 @@ Sample output:
 
 ---
 
-## 📦 Output Overview
+## 📂 Response Example (`/api/analyze-audio`)
 
-`/api/analyze-audio` returns:
-
-- Structured transcript with timestamps
-- Summary and title
-- Evaluation metrics as JSON
-- Transcript saved as `.txt` file locally
-
----
-
-## 💡 Notes
-
-- Whisper must be loaded before handling requests
-- Gemini API key should be securely configured via environment variables or `config.py`
-- Supports multiple LLM backends for flexibility
+```json
+{
+  "structured_transcript": "[00:00:00] Agent (calm): Hello, thank you for calling...",
+  "title": "Flight Cancellation Due to Emergency",
+  "summary": "Customer contacted support regarding...",
+  "evaluation_metrics": {
+    "Empathy": { "score": 9, "comment": "Agent demonstrated sincere concern..." },
+    ...
+  },
+  "success": true
+}
+```
 
 ---
 
-## 🤝 Contributions
+## 🔐 Notes
 
-Feel free to open issues or submit pull requests to improve accuracy, support new models, or enhance output formatting.
+- Set your Gemini API key securely via environment variables or config file
+- Whisper model must be loaded before handling requests
+- Audio is processed securely via temporary file handling
+- Transcript is saved locally with timestamped filename
+
+---
+
+## 📬 Contributions
+
+Pull requests and feature suggestions welcome!  
+Help improve evaluation logic, add more LLMs, or enhance output display.
 
 ---
