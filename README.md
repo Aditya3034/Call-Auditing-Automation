@@ -1,4 +1,4 @@
-# 🎧 Payone Call Analysis API — Whisper + Gemini Integration
+# 🎧 Call Analysis API — Whisper + Gemini Integration
 
 This FastAPI application provides end-to-end call analysis by transcribing audio files, structuring transcripts, generating summaries, and evaluating interactions using OpenAI's Whisper and Google's Gemini LLMs.
 
